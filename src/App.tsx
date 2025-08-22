@@ -4,6 +4,7 @@ import { Register } from "./pages/Register";
 import { Dashboard } from "./pages/Dashboard";
 import { Home } from "./pages/Homepage";
 import FlowDetails from "./pages/FlowDetails";
+import FlowBuilder from "./pages/FlowBuilder";
 
 export default function App() {
   return (
@@ -14,6 +15,7 @@ export default function App() {
         <Route path="/" element={<Home />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/flows/:id" element={<FlowDetails />} />
+        <Route path="/flow-builder" element={<FlowBuilder />} />
         <Route path="*" element={<p>404 Page Not Found</p>} />
       </Routes>
     </BrowserRouter>
