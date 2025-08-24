@@ -134,19 +134,22 @@ export default function FlowBuilder() {
 
       setLoading(true);
       const flowData = { name: flowName, nodes, edges };
+      const url = flowId
+        ? `${import.meta.env.VITE_API_BASE_URL}/flows/${flowId}` // update existing
+        : `${import.meta.env.VITE_API_BASE_URL}/flows`; // create new
 
-      const res = await axios.post(
-        `${import.meta.env.VITE_API_BASE_URL}/flows`,
-        flowData,
-        {
-          headers: {
-            Authorization: token,
-            "Content-Type": "application/json",
-          },
-        }
+      const method = flowId ? "put" : "post";
+
+      const res = await axios[method](url, flowData, {
+        headers: {
+          Authorization: token,
+          "Content-Type": "application/json",
+        },
+      });
+
+      alert(
+        flowId ? "Flow updated successfully ✅" : "Flow created successfully ✅"
       );
-
-      alert("Flow saved successfully ✅");
       console.log("Saved Flow:", res.data);
     } catch (err: any) {
       alert(err.response?.data?.message || "Failed to save flow ❌");
