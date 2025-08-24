@@ -15,6 +15,7 @@ export default function App() {
         <Route path="/" element={<Home />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/flows/:id" element={<FlowDetails />} />
+        <Route path="/flows/:id/edit" element={<FlowBuilder />} />
         <Route path="/flow-builder" element={<FlowBuilder />} />
         <Route path="*" element={<p>404 Page Not Found</p>} />
       </Routes>

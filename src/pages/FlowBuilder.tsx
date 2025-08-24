@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import {
   ReactFlow,
   addEdge,
@@ -10,63 +10,118 @@ import {
   type Edge,
   type Connection,
   BackgroundVariant,
+  type Node,
 } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
 import axios from "axios";
 import { EmailNode } from "../nodes/EmailNode";
 import { WaitNode } from "../nodes/WaitNode";
+import { useParams } from "react-router-dom";
 
-const initialNodes = [
-  {
-    id: "1",
-    position: { x: 250, y: 5 },
-    data: { label: "Start Node" },
-    type: "default",
-  },
-];
+// -------------------
+// Node Data Type
+// -------------------
+type NodeData = {
+  label?: string;
+  to?: string;
+  subject?: string;
+  body?: string;
+  delay?: string;
+  onChange: (nodeId: string, field: string, value: string) => void;
+};
 
-const initialEdges: Edge[] = [];
+type CustomNode = Node<NodeData>;
 
-let id = 2; // counter for unique ids
-const getId = () => `node-${id++}`;
+// -------------------
+// Helpers
+// -------------------
+let id = 1;
+const getId = () => `${id++}`;
 
 export default function FlowBuilder() {
-  const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
-  const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
+  const [nodes, setNodes, onNodesChange] = useNodesState<CustomNode>([]);
+  //   @ts-ignore
+  const [edges, setEdges, onEdgesChange] = useEdgesState<Edge[]>([]);
   const [flowName, setFlowName] = useState("My New Flow");
   const [loading, setLoading] = useState(false);
 
+  // Function to update node data dynamically
+  const updateNodeData = (nodeId: string, field: string, value: string) => {
+    setNodes((nds) =>
+      nds.map((node) =>
+        node.id === nodeId
+          ? {
+              ...node,
+              data: {
+                ...node.data,
+                [field]: value,
+                onChange: updateNodeData,
+              },
+            }
+          : node
+      )
+    );
+  };
+
+  // Add Email Node
+  const addEmailNode = () => {
+    const newNode: CustomNode = {
+      id: getId(),
+      type: "email",
+      position: { x: Math.random() * 400, y: Math.random() * 400 },
+      data: { to: "", subject: "", body: "", onChange: updateNodeData },
+    };
+    setNodes((nds) => [...nds, newNode]);
+  };
+
+  // Add Wait Node
+  const addWaitNode = () => {
+    const newNode: CustomNode = {
+      id: getId(),
+      type: "wait",
+      position: { x: Math.random() * 400, y: Math.random() * 400 },
+      data: { delay: "1 minute", onChange: updateNodeData },
+    };
+    setNodes((nds) => [...nds, newNode]);
+  };
+
   const onConnect = useCallback(
+    // @ts-ignore
     (params: Connection) => setEdges((eds) => addEdge(params, eds)),
     [setEdges]
   );
 
-  const nodeTypes = {
-    email: EmailNode,
-    wait: WaitNode,
-  };
+  const { id: flowId } = useParams();
 
-  // 👉 Add Email Node
-  const addEmailNode = () => {
-    const newNode = {
-      id: getId(),
-      type: "email",
-      position: { x: Math.random() * 400, y: Math.random() * 400 },
-      data: { to: "", subject: "", body: "" },
-    };
-    setNodes((nds) => nds.concat(newNode));
-  };
+  useEffect(() => {
+    const fetchFlow = async () => {
+      if (!flowId) return; // New flow creation mode
+      try {
+        const token = localStorage.getItem("token");
+        const res = await axios.get(
+          `${import.meta.env.VITE_API_BASE_URL}/flows/${flowId}`,
+          { headers: { Authorization: token || "" } }
+        );
 
-  // 👉 Add Wait Node
-  const addWaitNode = () => {
-    const newNode = {
-      id: getId(),
-      type: "wait",
-      position: { x: Math.random() * 400, y: Math.random() * 400 },
-      data: { delay: "1 minute" },
+        const { name, nodes, edges } = res.data.flow; // ✅ Make sure your API returns `flow`
+
+        // Reattach `onChange` handlers
+        const updatedNodes = nodes.map((node: CustomNode) => ({
+          ...node,
+          data: { ...node.data, onChange: updateNodeData },
+        }));
+
+        setFlowName(name);
+        setNodes(updatedNodes);
+        setEdges(edges);
+      } catch (err) {
+        console.error(err);
+        alert("Failed to load flow ❌");
+      }
     };
-    setNodes((nds) => nds.concat(newNode));
-  };
+
+    fetchFlow();
+  }, [flowId]);
 
   // Save flow to backend
   const handleSave = async () => {
@@ -78,11 +133,7 @@ export default function FlowBuilder() {
       }
 
       setLoading(true);
-      const flowData = {
-        name: flowName,
-        nodes,
-        edges,
-      };
+      const flowData = { name: flowName, nodes, edges };
 
       const res = await axios.post(
         `${import.meta.env.VITE_API_BASE_URL}/flows`,
@@ -104,6 +155,11 @@ export default function FlowBuilder() {
     }
   };
 
+  const nodeTypes = {
+    email: EmailNode,
+    wait: WaitNode,
+  };
+
   return (
     <div style={{ width: "100%", height: "100vh" }}>
       {/* Top bar */}
@@ -122,26 +178,25 @@ export default function FlowBuilder() {
           {loading ? "Saving..." : "Save Flow"}
         </button>
 
-        {/* Node Add Buttons */}
         <button
           onClick={addEmailNode}
-          className="px-3 py-2 bg-indigo-500 rounded-lg hover:bg-indigo-600"
+          className="px-4 py-2 bg-blue-500 rounded-lg hover:bg-blue-600 transition"
         >
           + Email Node
         </button>
         <button
           onClick={addWaitNode}
-          className="px-3 py-2 bg-pink-500 rounded-lg hover:bg-pink-600"
+          className="px-4 py-2 bg-green-500 rounded-lg hover:bg-green-600 transition"
         >
           + Wait Node
         </button>
       </div>
 
-      {/* Flow canvas */}
+      {/* Flow Canvas */}
       <ReactFlow
-        nodes={nodes}
+        nodes={nodes} // @ts-ignore
         edges={edges}
-        onNodesChange={onNodesChange}
+        onNodesChange={onNodesChange} // @ts-ignore
         onEdgesChange={onEdgesChange}
         onConnect={onConnect}
         fitView
