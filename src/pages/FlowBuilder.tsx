@@ -16,11 +16,9 @@ import "@xyflow/react/dist/style.css";
 import axios from "axios";
 import { EmailNode } from "../nodes/EmailNode";
 import { WaitNode } from "../nodes/WaitNode";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { ArrowLeft } from "lucide-react";
 
-// -------------------
-// Node Data Type
-// -------------------
 type NodeData = {
   label?: string;
   to?: string;
@@ -32,9 +30,6 @@ type NodeData = {
 
 type CustomNode = Node<NodeData>;
 
-// -------------------
-// Helpers
-// -------------------
 let id = 1;
 const getId = () => `${id++}`;
 
@@ -95,7 +90,7 @@ export default function FlowBuilder() {
 
   useEffect(() => {
     const fetchFlow = async () => {
-      if (!flowId) return; // New flow creation mode
+      if (!flowId) return;
       try {
         const token = localStorage.getItem("token");
         const res = await axios.get(
@@ -103,7 +98,7 @@ export default function FlowBuilder() {
           { headers: { Authorization: token || "" } }
         );
 
-        const { name, nodes, edges } = res.data.flow; // ✅ Make sure your API returns `flow`
+        const { name, nodes, edges } = res.data.flow;
 
         // Reattach `onChange` handlers
         const updatedNodes = nodes.map((node: CustomNode) => ({
@@ -135,8 +130,8 @@ export default function FlowBuilder() {
       setLoading(true);
       const flowData = { name: flowName, nodes, edges };
       const url = flowId
-        ? `${import.meta.env.VITE_API_BASE_URL}/flows/${flowId}` // update existing
-        : `${import.meta.env.VITE_API_BASE_URL}/flows`; // create new
+        ? `${import.meta.env.VITE_API_BASE_URL}/flows/${flowId}`
+        : `${import.meta.env.VITE_API_BASE_URL}/flows`;
 
       const method = flowId ? "put" : "post";
 
@@ -163,10 +158,20 @@ export default function FlowBuilder() {
     wait: WaitNode,
   };
 
+  const navigate = useNavigate();
+
   return (
     <div style={{ width: "100%", height: "100vh" }}>
       {/* Top bar */}
       <div className="p-4 flex items-center gap-4 bg-gray-900 text-white">
+        <button
+          onClick={() => navigate(-1)}
+          className="flex items-center gap-2 text-white hover:text-gray-300 transition"
+        >
+          <ArrowLeft size={20} />
+          <span>Back</span>
+        </button>
+
         <input
           value={flowName}
           onChange={(e) => setFlowName(e.target.value)}
