@@ -5,18 +5,52 @@ import { Dashboard } from "./pages/Dashboard";
 import { Home } from "./pages/Homepage";
 import FlowDetails from "./pages/FlowDetails";
 import FlowBuilder from "./pages/FlowBuilder";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 export default function App() {
   return (
     <BrowserRouter>
       <Routes>
+        {/* Public Routes */}
         <Route path="/login" element={<LogIn />} />
         <Route path="/register" element={<Register />} />
         <Route path="/" element={<Home />} />
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/flows/:id" element={<FlowDetails />} />
-        <Route path="/flows/:id/edit" element={<FlowBuilder />} />
-        <Route path="/flow-builder" element={<FlowBuilder />} />
+
+        {/* Protected Routes */}
+        <Route
+          path="/dashboard"
+          element={
+            <ProtectedRoute>
+              <Dashboard />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/flows/:id"
+          element={
+            <ProtectedRoute>
+              <FlowDetails />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/flows/:id/edit"
+          element={
+            <ProtectedRoute>
+              <FlowBuilder />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/flow-builder"
+          element={
+            <ProtectedRoute>
+              <FlowBuilder />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Fallback */}
         <Route path="*" element={<p>404 Page Not Found</p>} />
       </Routes>
     </BrowserRouter>

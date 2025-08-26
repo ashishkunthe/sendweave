@@ -175,7 +175,7 @@ export default function FlowBuilder() {
         <input
           value={flowName}
           onChange={(e) => setFlowName(e.target.value)}
-          className="px-3 py-2 rounded-md text-black"
+          className="px-3 py-2 rounded-md text-gray-200"
           placeholder="Enter flow name..."
         />
         <button

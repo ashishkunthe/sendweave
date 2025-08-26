@@ -9,7 +9,7 @@ export function Dashboard() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
-  // 🔹 fetch flows
+  // fetch flows
   const fetchFlows = async () => {
     try {
       const token = localStorage.getItem("token");
@@ -21,7 +21,7 @@ export function Dashboard() {
       const res = await axios.get(
         `${import.meta.env.VITE_API_BASE_URL}/flows`,
         {
-          headers: { Authorization: token }, // ✅ no Bearer
+          headers: { Authorization: token },
         }
       );
 
@@ -37,7 +37,7 @@ export function Dashboard() {
     fetchFlows();
   }, [navigate]);
 
-  // 🔹 Execute flow
+  // Execute flow
   const handleExecute = async (id: string) => {
     try {
       await axios.post(
@@ -51,7 +51,7 @@ export function Dashboard() {
     }
   };
 
-  // 🔹 Delete flow
+  //  Delete flow
   const handleDelete = async (id: string) => {
     if (!window.confirm("Are you sure you want to delete this flow?")) return;
 
@@ -60,7 +60,7 @@ export function Dashboard() {
         headers: { Authorization: localStorage.getItem("token") || "" },
       });
       alert("🗑️ Flow deleted successfully");
-      fetchFlows(); // refresh list after delete
+      fetchFlows();
     } catch (err: any) {
       alert(err.response?.data?.message || "Delete failed ❌");
     }
@@ -78,14 +78,28 @@ export function Dashboard() {
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-indigo-900 to-purple-900 text-white px-6 py-10">
       <header className="flex justify-between items-center mb-10">
         <h1 className="text-3xl font-bold text-yellow-400">Your Flows</h1>
-        <motion.button
-          onClick={() => navigate("/flow-builder")}
-          className="bg-yellow-400 text-black font-semibold px-6 py-2 rounded-full shadow-lg hover:bg-yellow-500 transition"
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-        >
-          + Create New Flow
-        </motion.button>
+        <div className="flex gap-4">
+          <motion.button
+            onClick={() => navigate("/flow-builder")}
+            className="bg-yellow-400 text-black font-semibold px-6 py-2 rounded-full shadow-lg hover:bg-yellow-500 transition"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            + Create New Flow
+          </motion.button>
+
+          <motion.button
+            onClick={() => {
+              localStorage.removeItem("token");
+              navigate("/");
+            }}
+            className="bg-red-500 text-white font-semibold px-6 py-2 rounded-full shadow-lg hover:bg-red-600 transition"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            Logout
+          </motion.button>
+        </div>
       </header>
 
       {error ? (
@@ -136,81 +150,3 @@ export function Dashboard() {
     </div>
   );
 }
-
-// import { useNavigate } from "react-router-dom";
-// import { motion } from "framer-motion";
-
-// export function Dashboard() {
-//   const navigate = useNavigate();
-
-//   // Dummy flows (replace with API later)
-//   const flows = [
-//     {
-//       _id: "1",
-//       name: "Welcome Email Campaign",
-//       createdAt: "2025-02-15T12:00:00Z",
-//     },
-//     {
-//       _id: "2",
-//       name: "Product Launch Sequence",
-//       createdAt: "2025-03-01T09:30:00Z",
-//     },
-//     {
-//       _id: "3",
-//       name: "Re-engagement Campaign",
-//       createdAt: "2025-03-12T15:45:00Z",
-//     },
-//   ];
-
-//   return (
-//     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-indigo-900 to-purple-900 text-white px-6 py-10">
-//       {/* Header */}
-//       <header className="flex justify-between items-center mb-10">
-//         <h1 className="text-3xl font-bold text-yellow-400">Your Flows</h1>
-//         <motion.button
-//           onClick={() => navigate("/flow-builder")}
-//           className="bg-yellow-400 text-black font-semibold px-6 py-2 rounded-full shadow-lg hover:bg-yellow-500 transition"
-//           whileHover={{ scale: 1.05 }}
-//           whileTap={{ scale: 0.95 }}
-//         >
-//           + Create New Flow
-//         </motion.button>
-//       </header>
-
-//       {/* Flows Grid */}
-//       <div className="grid md:grid-cols-3 gap-6">
-//         {flows.map((flow) => (
-//           <motion.div
-//             key={flow._id}
-//             className="bg-white/10 backdrop-blur-lg p-6 rounded-2xl shadow-lg"
-//             initial={{ opacity: 0, y: 20 }}
-//             animate={{ opacity: 1, y: 0 }}
-//             transition={{ duration: 0.3 }}
-//           >
-//             <h3 className="text-xl font-bold text-yellow-300 mb-2">
-//               {flow.name}
-//             </h3>
-//             <p className="text-gray-300 text-sm mb-4">
-//               Created at: {new Date(flow.createdAt).toLocaleDateString()}
-//             </p>
-
-//             <div className="flex space-x-3">
-//               <button
-//                 onClick={() => navigate(`/flows/${flow._id}`)}
-//                 className="px-4 py-2 text-sm bg-indigo-500 rounded-lg hover:bg-indigo-600 transition"
-//               >
-//                 View / Edit
-//               </button>
-//               <button
-//                 onClick={() => alert(`Executing flow: ${flow._id}`)}
-//                 className="px-4 py-2 text-sm bg-green-500 rounded-lg hover:bg-green-600 transition"
-//               >
-//                 Execute
-//               </button>
-//             </div>
-//           </motion.div>
-//         ))}
-//       </div>
-//     </div>
-//   );
-// }
