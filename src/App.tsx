@@ -11,12 +11,10 @@ export default function App() {
   return (
     <BrowserRouter>
       <Routes>
-        {/* Public Routes */}
         <Route path="/login" element={<LogIn />} />
         <Route path="/register" element={<Register />} />
         <Route path="/" element={<Home />} />
 
-        {/* Protected Routes */}
         <Route
           path="/dashboard"
           element={
@@ -50,7 +48,6 @@ export default function App() {
           }
         />
 
-        {/* Fallback */}
         <Route path="*" element={<p>404 Page Not Found</p>} />
       </Routes>
     </BrowserRouter>

@@ -17,7 +17,7 @@ export function Home() {
             Login
           </button>
           <button
-            onClick={() => navigate("/register")}
+            onClick={() => navigate("/dashboard")}
             className="px-4 py-2 bg-yellow-400 text-black font-semibold rounded-full text-sm hover:bg-yellow-500 transition"
           >
             Get Started
@@ -69,7 +69,7 @@ export function Home() {
           transition={{ delay: 1, duration: 1 }}
         >
           <button
-            onClick={() => navigate("/register")}
+            onClick={() => navigate("/dashboard")}
             className="bg-yellow-400 text-black font-bold px-8 py-3 rounded-full text-lg shadow-lg hover:bg-yellow-500 transition"
           >
             Get Started
