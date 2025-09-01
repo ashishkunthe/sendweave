@@ -80,6 +80,14 @@ export function Dashboard() {
         <h1 className="text-3xl font-bold text-yellow-400">Your Flows</h1>
         <div className="flex gap-4">
           <motion.button
+            onClick={() => navigate("/templates")}
+            className="bg-blue-400 text-black font-semibold px-6 py-2 rounded-full shadow-lg hover:bg-blue-500 transition"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            📧 Templates
+          </motion.button>
+          <motion.button
             onClick={() => navigate("/flow-builder")}
             className="bg-yellow-400 text-black font-semibold px-6 py-2 rounded-full shadow-lg hover:bg-yellow-500 transition"
             whileHover={{ scale: 1.05 }}

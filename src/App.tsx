@@ -6,6 +6,7 @@ import { Home } from "./pages/Homepage";
 import FlowDetails from "./pages/FlowDetails";
 import FlowBuilder from "./pages/FlowBuilder";
 import ProtectedRoute from "./components/ProtectedRoute";
+import { Templates } from "./pages/Templates";
 
 export default function App() {
   return (
@@ -47,7 +48,14 @@ export default function App() {
             </ProtectedRoute>
           }
         />
-
+        <Route
+          path="/templates"
+          element={
+            <ProtectedRoute>
+              <Templates />
+            </ProtectedRoute>
+          }
+        />
         <Route path="*" element={<p>404 Page Not Found</p>} />
       </Routes>
     </BrowserRouter>
