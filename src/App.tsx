@@ -7,57 +7,61 @@ import FlowDetails from "./pages/FlowDetails";
 import FlowBuilder from "./pages/FlowBuilder";
 import ProtectedRoute from "./components/ProtectedRoute";
 import { Templates } from "./pages/Templates";
+import { Toaster } from "react-hot-toast";
 
 export default function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/login" element={<LogIn />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/" element={<Home />} />
+    <>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/login" element={<LogIn />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/" element={<Home />} />
 
-        <Route
-          path="/dashboard"
-          element={
-            <ProtectedRoute>
-              <Dashboard />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/flows/:id"
-          element={
-            <ProtectedRoute>
-              <FlowDetails />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/flows/:id/edit"
-          element={
-            <ProtectedRoute>
-              <FlowBuilder />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/flow-builder"
-          element={
-            <ProtectedRoute>
-              <FlowBuilder />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/templates"
-          element={
-            <ProtectedRoute>
-              <Templates />
-            </ProtectedRoute>
-          }
-        />
-        <Route path="*" element={<p>404 Page Not Found</p>} />
-      </Routes>
-    </BrowserRouter>
+          <Route
+            path="/dashboard"
+            element={
+              <ProtectedRoute>
+                <Dashboard />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/flows/:id"
+            element={
+              <ProtectedRoute>
+                <FlowDetails />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/flows/:id/edit"
+            element={
+              <ProtectedRoute>
+                <FlowBuilder />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/flow-builder"
+            element={
+              <ProtectedRoute>
+                <FlowBuilder />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/templates"
+            element={
+              <ProtectedRoute>
+                <Templates />
+              </ProtectedRoute>
+            }
+          />
+          <Route path="*" element={<p>404 Page Not Found</p>} />
+        </Routes>
+      </BrowserRouter>{" "}
+      <Toaster position="top-right" reverseOrder={false} />
+    </>
   );
 }

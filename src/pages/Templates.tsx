@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import axios from "axios";
+import toast from "react-hot-toast";
 
 export function Templates() {
   const navigate = useNavigate();
@@ -75,21 +76,21 @@ export function Templates() {
           payload,
           { headers: { Authorization: `${token}` } }
         );
-        alert("✅ Template updated successfully!");
+        toast.success(" Template updated successfully!");
       } else {
         await axios.post(
           `${import.meta.env.VITE_API_BASE_URL}/templates`,
           payload,
           { headers: { Authorization: `${token}` } }
         );
-        alert("✅ Template created successfully!");
+        toast.success("Template created successfully!");
       }
 
       setOpenModal(false);
       fetchTemplates();
     } catch (err: any) {
       console.error("Template save error:", err.response || err);
-      alert(err.response?.data?.message || "Save failed ❌");
+      toast.error(err.response?.data?.message || "Save failed ❌");
     }
   };
 
@@ -101,13 +102,13 @@ export function Templates() {
       await axios.delete(
         `${import.meta.env.VITE_API_BASE_URL}/templates/${id}`,
         {
-          headers: { Authorization: ` ${localStorage.getItem("token")}` },
+          headers: { Authorization: localStorage.getItem("token") || "" },
         }
       );
-      alert("🗑️ Template deleted successfully");
+      toast.success("🗑️ Template deleted successfully");
       fetchTemplates();
     } catch (err: any) {
-      alert(err.response?.data?.message || "Delete failed ❌");
+      toast.error(err.response?.data?.message || "Delete failed ❌");
     }
   };
 
@@ -180,7 +181,7 @@ export function Templates() {
                   onClick={() => {
                     const content = `Subject: ${template.subject}\n\n${template.body}`;
                     navigator.clipboard.writeText(content);
-                    alert("📋 Template copied to clipboard!");
+                    toast.success("📋 Template copied to clipboard!");
                   }}
                   className="px-4 py-2 text-sm bg-yellow-500 text-black rounded-lg hover:bg-yellow-600 transition"
                 >

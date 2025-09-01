@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import axios from "axios";
+import toast from "react-hot-toast";
 
 export function Dashboard() {
   const navigate = useNavigate();
@@ -45,13 +46,13 @@ export function Dashboard() {
         {},
         { headers: { Authorization: localStorage.getItem("token") || "" } }
       );
-      alert("✅ Flow execution started!");
+      toast.success(" Flow execution started!");
     } catch (err: any) {
-      alert(err.response?.data?.message || "Execution failed ❌");
+      toast.error(err.response?.data?.message || "Execution failed ❌");
     }
   };
 
-  //  Delete flow
+  // Delete flow
   const handleDelete = async (id: string) => {
     if (!window.confirm("Are you sure you want to delete this flow?")) return;
 
@@ -59,10 +60,10 @@ export function Dashboard() {
       await axios.delete(`${import.meta.env.VITE_API_BASE_URL}/flows/${id}`, {
         headers: { Authorization: localStorage.getItem("token") || "" },
       });
-      alert("🗑️ Flow deleted successfully");
+      toast.success("🗑️ Flow deleted successfully");
       fetchFlows();
     } catch (err: any) {
-      alert(err.response?.data?.message || "Delete failed ❌");
+      toast.error(err.response?.data?.message || "Delete failed ❌");
     }
   };
 
