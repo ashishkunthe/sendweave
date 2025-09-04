@@ -8,6 +8,7 @@ import FlowBuilder from "./pages/FlowBuilder";
 import ProtectedRoute from "./components/ProtectedRoute";
 import { Templates } from "./pages/Templates";
 import { Toaster } from "react-hot-toast";
+import { Contacts } from "./pages/Contacts";
 
 export default function App() {
   return (
@@ -55,6 +56,14 @@ export default function App() {
             element={
               <ProtectedRoute>
                 <Templates />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/contacts"
+            element={
+              <ProtectedRoute>
+                <Contacts />
               </ProtectedRoute>
             }
           />

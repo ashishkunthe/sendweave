@@ -80,14 +80,27 @@ export function Dashboard() {
       <header className="flex justify-between items-center mb-10">
         <h1 className="text-3xl font-bold text-yellow-400">Your Flows</h1>
         <div className="flex gap-4">
+          {/* Templates Button */}
           <motion.button
             onClick={() => navigate("/templates")}
             className="bg-blue-400 text-black font-semibold px-6 py-2 rounded-full shadow-lg hover:bg-blue-500 transition"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
-            📧 Templates
+            Templates
           </motion.button>
+
+          {/* Contacts Button */}
+          <motion.button
+            onClick={() => navigate("/contacts")}
+            className="bg-green-400 text-black font-semibold px-6 py-2 rounded-full shadow-lg hover:bg-green-500 transition"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            Contacts
+          </motion.button>
+
+          {/* Create Flow */}
           <motion.button
             onClick={() => navigate("/flow-builder")}
             className="bg-yellow-400 text-black font-semibold px-6 py-2 rounded-full shadow-lg hover:bg-yellow-500 transition"
@@ -97,6 +110,7 @@ export function Dashboard() {
             + Create New Flow
           </motion.button>
 
+          {/* Logout */}
           <motion.button
             onClick={() => {
               localStorage.removeItem("token");
