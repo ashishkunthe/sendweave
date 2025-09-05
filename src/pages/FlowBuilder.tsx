@@ -163,38 +163,45 @@ export default function FlowBuilder() {
   return (
     <div style={{ width: "100%", height: "100vh" }}>
       {/* Top bar */}
-      <div className="p-4 flex items-center gap-4 bg-gray-900 text-white">
+      <div className="p-4 flex items-center gap-3 bg-gray-950 text-white shadow-md">
+        {/* Back Button */}
         <button
           onClick={() => navigate(-1)}
-          className="flex items-center gap-2 text-white hover:text-gray-300 transition"
+          className="flex items-center gap-2 text-gray-300 hover:text-yellow-400 transition"
         >
           <ArrowLeft size={20} />
           <span>Back</span>
         </button>
 
+        {/* Flow Name Input */}
         <input
           value={flowName}
           onChange={(e) => setFlowName(e.target.value)}
-          className="px-3 py-2 rounded-md text-gray-200"
+          className="px-3 py-2 rounded-md bg-gray-800 border border-gray-700 text-gray-200 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-yellow-400"
           placeholder="Enter flow name..."
         />
+
+        {/* Save Button */}
         <button
           onClick={handleSave}
           disabled={loading}
-          className="px-4 py-2 bg-yellow-400 text-black rounded-lg font-bold hover:bg-yellow-500 transition"
+          className="px-4 py-2 bg-gray-800 text-white rounded-lg font-semibold border border-gray-700 hover:bg-yellow-500 hover:text-black transition"
         >
           {loading ? "Saving..." : "Save Flow"}
         </button>
 
+        {/* Add Email Node */}
         <button
           onClick={addEmailNode}
-          className="px-4 py-2 bg-blue-500 rounded-lg hover:bg-blue-600 transition"
+          className="px-4 py-2 bg-gray-800 text-white rounded-lg font-semibold border border-gray-700 hover:bg-blue-500 transition"
         >
           + Email Node
         </button>
+
+        {/* Add Wait Node */}
         <button
           onClick={addWaitNode}
-          className="px-4 py-2 bg-green-500 rounded-lg hover:bg-green-600 transition"
+          className="px-4 py-2 bg-gray-800 text-white rounded-lg font-semibold border border-gray-700 hover:bg-green-500 transition"
         >
           + Wait Node
         </button>

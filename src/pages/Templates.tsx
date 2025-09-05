@@ -76,7 +76,7 @@ export function Templates() {
           payload,
           { headers: { Authorization: `${token}` } }
         );
-        toast.success(" Template updated successfully!");
+        toast.success("Template updated successfully!");
       } else {
         await axios.post(
           `${import.meta.env.VITE_API_BASE_URL}/templates`,
@@ -89,7 +89,6 @@ export function Templates() {
       setOpenModal(false);
       fetchTemplates();
     } catch (err: any) {
-      console.error("Template save error:", err.response || err);
       toast.error(err.response?.data?.message || "Save failed ❌");
     }
   };
@@ -114,20 +113,28 @@ export function Templates() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-900 via-indigo-900 to-purple-900 text-white">
-        <p className="text-lg animate-pulse">Loading your templates...</p>
+      <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-black via-gray-900 to-black text-white">
+        {/* Spinner */}
+        <div className="relative w-16 h-16 mb-6">
+          <div className="absolute inset-0 rounded-full border-4 border-t-yellow-500 border-gray-700 animate-spin"></div>
+        </div>
+
+        {/* Text */}
+        <p className="text-lg font-medium text-gray-300 animate-pulse">
+          Loading Templates...
+        </p>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-indigo-900 to-purple-900 text-white px-6 py-10">
+    <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black text-white px-6 py-10">
       <header className="flex justify-between items-center mb-10">
-        <h1 className="text-3xl font-bold text-yellow-400">Your Templates</h1>
+        <h1 className="text-3xl font-bold">Your Templates</h1>
         <div className="flex gap-4">
           <motion.button
             onClick={handleCreate}
-            className="bg-yellow-400 text-black font-semibold px-6 py-2 rounded-full shadow-lg hover:bg-yellow-500 transition"
+            className="bg-white text-black font-semibold px-6 py-2 rounded-lg shadow-md hover:bg-gray-200 transition"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
@@ -136,7 +143,7 @@ export function Templates() {
 
           <motion.button
             onClick={() => navigate("/dashboard")}
-            className="bg-gray-700 text-white font-semibold px-6 py-2 rounded-full shadow-lg hover:bg-gray-600 transition"
+            className="bg-gray-800 text-white font-semibold px-6 py-2 rounded-lg shadow-md hover:bg-gray-700 transition"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
@@ -156,34 +163,33 @@ export function Templates() {
           {templates.map((template) => (
             <motion.div
               key={template._id}
-              className="bg-white/10 backdrop-blur-lg p-6 rounded-2xl shadow-lg"
+              className="bg-gray-900/70 border border-gray-700 p-6 rounded-xl shadow-md hover:shadow-lg transition"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.3 }}
             >
-              <h3 className="text-xl font-bold text-yellow-300 mb-2">
+              <h3 className="text-xl font-bold text-white mb-2">
                 {template.name || "Untitled Template"}
               </h3>
               <p className="text-sm text-gray-400 mb-2">
                 <strong>Subject:</strong> {template.subject}
               </p>
-              <p className="text-gray-300 text-sm mb-4">
+              <p className="text-gray-400 text-sm mb-4">
                 {template.global ? "🌍 Global Template" : "👤 Your Template"}
               </p>
               <div
-                className="text-sm text-white/80 mb-4 max-h-24 overflow-hidden"
+                className="text-sm text-gray-300 mb-4 max-h-24 overflow-hidden"
                 dangerouslySetInnerHTML={{ __html: template.body }}
               ></div>
 
               <div className="flex flex-wrap gap-2">
-                {/* Copy Button */}
                 <button
                   onClick={() => {
                     const content = `Subject: ${template.subject}\n\n${template.body}`;
                     navigator.clipboard.writeText(content);
                     toast.success("📋 Template copied to clipboard!");
                   }}
-                  className="px-4 py-2 text-sm bg-yellow-500 text-black rounded-lg hover:bg-yellow-600 transition"
+                  className="px-4 py-2 text-sm bg-gray-800 text-white rounded-md hover:bg-gray-700 transition"
                 >
                   Copy
                 </button>
@@ -192,13 +198,13 @@ export function Templates() {
                   <>
                     <button
                       onClick={() => handleEdit(template)}
-                      className="px-4 py-2 text-sm bg-indigo-500 rounded-lg hover:bg-indigo-600 transition"
+                      className="px-4 py-2 text-sm bg-white text-black rounded-md hover:bg-gray-200 transition"
                     >
                       Edit
                     </button>
                     <button
                       onClick={() => handleDelete(template._id)}
-                      className="px-4 py-2 text-sm bg-red-500 rounded-lg hover:bg-red-600 transition"
+                      className="px-4 py-2 text-sm bg-black text-white rounded-md border border-red-500/30 hover:bg-red-600/20 hover:border-red-500 transition shadow-md"
                     >
                       Delete
                     </button>
@@ -213,51 +219,53 @@ export function Templates() {
       <AnimatePresence>
         {openModal && (
           <motion.div
-            className="fixed inset-0 flex items-center justify-center bg-black/50 z-50"
+            className="fixed inset-0 flex items-center justify-center bg-black/60 backdrop-blur-sm z-50"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
           >
             <motion.div
-              className="bg-gray-900 p-6 rounded-xl w-full max-w-lg text-white"
-              initial={{ scale: 0.8 }}
+              className="bg-white/10 backdrop-blur-xl border border-white/20 p-6 rounded-2xl w-full max-w-lg text-white shadow-xl"
+              initial={{ scale: 0.9 }}
               animate={{ scale: 1 }}
-              exit={{ scale: 0.8 }}
+              exit={{ scale: 0.9 }}
             >
-              <h2 className="text-2xl font-bold mb-4">
+              <h2 className="text-2xl font-bold mb-4 text-white">
                 {editingTemplate ? "Edit Template" : "Create Template"}
               </h2>
+
               <input
                 type="text"
                 value={templateName}
                 onChange={(e) => setTemplateName(e.target.value)}
-                className="w-full mb-3 p-2 rounded bg-gray-800 text-white border border-gray-700"
+                className="w-full mb-3 p-3 rounded-lg bg-black/40 text-white placeholder-gray-400 border border-white/20 focus:outline-none focus:ring-2 focus:ring-yellow-400"
                 placeholder="Template Name"
               />
               <input
                 type="text"
                 value={templateSubject}
                 onChange={(e) => setTemplateSubject(e.target.value)}
-                className="w-full mb-3 p-2 rounded bg-gray-800 text-white border border-gray-700"
+                className="w-full mb-3 p-3 rounded-lg bg-black/40 text-white placeholder-gray-400 border border-white/20 focus:outline-none focus:ring-2 focus:ring-yellow-400"
                 placeholder="Template Subject"
               />
               <textarea
                 value={templateBody}
                 onChange={(e) => setTemplateBody(e.target.value)}
-                className="w-full mb-3 p-2 rounded bg-gray-800 text-white border border-gray-700"
+                className="w-full mb-3 p-3 rounded-lg bg-black/40 text-white placeholder-gray-400 border border-white/20 focus:outline-none focus:ring-2 focus:ring-yellow-400"
                 placeholder="Template Body (HTML allowed)"
                 rows={6}
               ></textarea>
-              <div className="flex justify-end gap-3">
+
+              <div className="flex justify-end gap-3 mt-4">
                 <button
                   onClick={() => setOpenModal(false)}
-                  className="px-4 py-2 bg-gray-700 rounded-lg hover:bg-gray-600"
+                  className="px-5 py-2 bg-gray-700/70 text-white rounded-lg hover:bg-gray-600/80 transition"
                 >
                   Cancel
                 </button>
                 <button
                   onClick={handleSave}
-                  className="px-4 py-2 bg-green-500 rounded-lg hover:bg-green-600"
+                  className="px-5 py-2 bg-black text-white font-semibold rounded-lg border border-green-500/30 hover:bg-green-600/20 hover:border-green-500 transition shadow-md"
                 >
                   {editingTemplate ? "Save Changes" : "Create Template"}
                 </button>

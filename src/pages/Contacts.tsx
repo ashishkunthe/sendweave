@@ -138,20 +138,26 @@ export function Contacts() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center text-white">
-        <p className="text-lg animate-pulse">Loading contacts...</p>
+      <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-black via-gray-900 to-black text-white">
+        <div className="relative w-16 h-16 mb-6">
+          <div className="absolute inset-0 rounded-full border-4 border-t-yellow-500 border-gray-700 animate-spin"></div>
+        </div>
+
+        <p className="text-lg font-medium text-gray-300 animate-pulse">
+          Loading Contacts...
+        </p>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-indigo-900 to-purple-900 text-white px-6 py-10">
+    <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black text-white px-6 py-10">
       <header className="flex justify-between items-center mb-10">
-        <h1 className="text-3xl font-bold text-yellow-400">Your Contacts</h1>
+        <h1 className="text-3xl font-bold text-white">Your Contacts</h1>
         <div className="flex gap-4">
           <motion.button
             onClick={() => setOpenAddModal(true)}
-            className="bg-yellow-400 text-black font-semibold px-6 py-2 rounded-full shadow-lg hover:bg-yellow-500 transition"
+            className="px-6 py-2 rounded-lg bg-black border border-yellow-500/40 text-white font-semibold hover:bg-yellow-500/20 hover:border-yellow-500 transition shadow-md"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
@@ -159,7 +165,7 @@ export function Contacts() {
           </motion.button>
           <motion.button
             onClick={() => setOpenUploadModal(true)}
-            className="bg-blue-500 text-white font-semibold px-6 py-2 rounded-full shadow-lg hover:bg-blue-600 transition"
+            className="px-6 py-2 rounded-lg bg-black border border-blue-500/40 text-white font-semibold hover:bg-blue-500/20 hover:border-blue-500 transition shadow-md"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
@@ -167,7 +173,7 @@ export function Contacts() {
           </motion.button>
           <motion.button
             onClick={() => navigate("/dashboard")}
-            className="bg-green-500 text-white font-semibold px-6 py-2 rounded-full shadow-lg hover:bg-green-600 transition"
+            className="px-6 py-2 rounded-lg bg-black border border-green-500/40 text-white font-semibold hover:bg-green-500/20 hover:border-green-500 transition shadow-md"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
@@ -185,12 +191,12 @@ export function Contacts() {
           {contacts.map((contact) => (
             <motion.div
               key={contact._id}
-              className="bg-white/10 backdrop-blur-lg p-6 rounded-2xl shadow-lg"
+              className="bg-black/60 backdrop-blur-lg p-6 rounded-2xl shadow-lg border border-gray-800"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.3 }}
             >
-              <h3 className="text-xl font-bold text-yellow-300 mb-2">
+              <h3 className="text-xl font-bold text-white mb-2">
                 {contact.name || "Unnamed Contact"}
               </h3>
               <p className="text-gray-300 mb-2">{contact.email}</p>
@@ -201,7 +207,7 @@ export function Contacts() {
               )}
               <button
                 onClick={() => handleDelete(contact._id)}
-                className="px-4 py-2 text-sm bg-red-500 rounded-lg hover:bg-red-600 transition"
+                className="px-4 py-2 text-sm rounded-lg bg-black border border-red-500/40 text-white hover:bg-red-600/20 hover:border-red-500 transition shadow-md"
               >
                 Delete
               </button>
@@ -220,52 +226,49 @@ export function Contacts() {
             exit={{ opacity: 0 }}
           >
             <motion.div
-              className="bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 p-8 rounded-2xl w-full max-w-lg text-white shadow-xl border border-gray-700"
+              className="bg-gradient-to-br from-black via-gray-900 to-black p-8 rounded-2xl w-full max-w-lg text-white shadow-xl border border-gray-800"
               initial={{ scale: 0.85 }}
               animate={{ scale: 1 }}
               exit={{ scale: 0.85 }}
             >
-              {/* Title */}
-              <h2 className="text-3xl font-extrabold mb-6 text-yellow-400 text-center">
+              <h2 className="text-3xl font-extrabold mb-6 text-white text-center">
                 Add New Contact
               </h2>
 
-              {/* Input Fields */}
               <div className="space-y-4">
                 <input
                   type="text"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  className="w-full p-3 rounded-lg bg-gray-800 text-white border border-gray-700 focus:border-yellow-400 focus:ring focus:ring-yellow-400/20 outline-none transition"
+                  className="w-full p-3 rounded-lg bg-gray-900 text-white border border-gray-700 focus:border-yellow-500 focus:ring focus:ring-yellow-500/20 outline-none transition"
                   placeholder="Full Name"
                 />
                 <input
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full p-3 rounded-lg bg-gray-800 text-white border border-gray-700 focus:border-yellow-400 focus:ring focus:ring-yellow-400/20 outline-none transition"
+                  className="w-full p-3 rounded-lg bg-gray-900 text-white border border-gray-700 focus:border-yellow-500 focus:ring focus:ring-yellow-500/20 outline-none transition"
                   placeholder="Email Address"
                 />
                 <input
                   type="text"
                   value={tags}
                   onChange={(e) => setTags(e.target.value)}
-                  className="w-full p-3 rounded-lg bg-gray-800 text-white border border-gray-700 focus:border-yellow-400 focus:ring focus:ring-yellow-400/20 outline-none transition"
+                  className="w-full p-3 rounded-lg bg-gray-900 text-white border border-gray-700 focus:border-yellow-500 focus:ring focus:ring-yellow-500/20 outline-none transition"
                   placeholder="Tags (comma separated)"
                 />
               </div>
 
-              {/* Buttons */}
               <div className="flex justify-end gap-4 mt-8">
                 <button
                   onClick={() => setOpenAddModal(false)}
-                  className="px-5 py-2 rounded-lg bg-gray-700 hover:bg-gray-600 transition text-sm font-medium"
+                  className="px-5 py-2 rounded-lg bg-gray-800 hover:bg-gray-700 transition text-sm font-medium"
                 >
                   Cancel
                 </button>
                 <button
                   onClick={handleAddContact}
-                  className="px-5 py-2 rounded-lg bg-yellow-400 text-black font-semibold hover:bg-yellow-500 transition text-sm"
+                  className="px-5 py-2 rounded-lg bg-black border border-yellow-500/40 text-white font-semibold hover:bg-yellow-500/20 hover:border-yellow-500 transition text-sm shadow-md"
                 >
                   Add Contact
                 </button>
@@ -285,26 +288,24 @@ export function Contacts() {
             exit={{ opacity: 0 }}
           >
             <motion.div
-              className="bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 p-8 rounded-2xl w-full max-w-lg text-white shadow-xl border border-gray-700"
+              className="bg-gradient-to-br from-black via-gray-900 to-black p-8 rounded-2xl w-full max-w-lg text-white shadow-xl border border-gray-800"
               initial={{ scale: 0.85 }}
               animate={{ scale: 1 }}
               exit={{ scale: 0.85 }}
             >
-              {/* Title */}
-              <h2 className="text-3xl font-extrabold mb-3 text-yellow-400">
+              <h2 className="text-3xl font-extrabold mb-3 text-white">
                 Upload Contacts CSV
               </h2>
               <p className="text-sm text-gray-300 mb-6 leading-relaxed">
                 Please ensure your CSV contains columns:{" "}
-                <span className="text-yellow-300 font-medium">name</span>,{" "}
-                <span className="text-yellow-300 font-medium">email</span>, and{" "}
-                <span className="text-yellow-300 font-medium">tags</span>.
+                <span className="text-gray-200 font-medium">name</span>,{" "}
+                <span className="text-gray-200 font-medium">email</span>, and{" "}
+                <span className="text-gray-200 font-medium">tags</span>.
               </p>
 
-              {/* File Input */}
               <label
                 htmlFor="file-upload"
-                className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-gray-600 rounded-lg cursor-pointer hover:border-yellow-400 transition mb-6 bg-gray-800/40"
+                className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-gray-600 rounded-lg cursor-pointer hover:border-yellow-500 transition mb-6 bg-gray-900/40"
               >
                 <svg
                   className="w-10 h-10 mb-3 text-gray-400"
@@ -331,17 +332,16 @@ export function Contacts() {
                 />
               </label>
 
-              {/* Buttons */}
               <div className="flex justify-end gap-4">
                 <button
                   onClick={() => setOpenUploadModal(false)}
-                  className="px-5 py-2 rounded-lg bg-gray-700 hover:bg-gray-600 transition text-sm font-medium"
+                  className="px-5 py-2 rounded-lg bg-gray-800 hover:bg-gray-700 transition text-sm font-medium"
                 >
                   Cancel
                 </button>
                 <button
                   onClick={handleCSVUpload}
-                  className="px-5 py-2 rounded-lg bg-yellow-400 text-black font-semibold hover:bg-yellow-500 transition text-sm"
+                  className="px-5 py-2 rounded-lg bg-black border border-yellow-500/40 text-white font-semibold hover:bg-yellow-500/20 hover:border-yellow-500 transition text-sm shadow-md"
                 >
                   Upload CSV
                 </button>

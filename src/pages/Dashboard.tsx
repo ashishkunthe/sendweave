@@ -46,7 +46,7 @@ export function Dashboard() {
         {},
         { headers: { Authorization: localStorage.getItem("token") || "" } }
       );
-      toast.success(" Flow execution started!");
+      toast.success("🚀 Flow execution started!");
     } catch (err: any) {
       toast.error(err.response?.data?.message || "Execution failed ❌");
     }
@@ -69,56 +69,58 @@ export function Dashboard() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-900 via-indigo-900 to-purple-900 text-white">
-        <p className="text-lg animate-pulse">Loading your flows...</p>
+      <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-black via-gray-900 to-black text-white">
+        <div className="relative w-16 h-16 mb-6">
+          <div className="absolute inset-0 rounded-full border-4 border-t-yellow-500 border-gray-700 animate-spin"></div>
+        </div>
+
+        <p className="text-lg font-medium text-gray-300 animate-pulse">
+          Loading Flows...
+        </p>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-indigo-900 to-purple-900 text-white px-6 py-10">
+    <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black text-white px-6 py-10">
       <header className="flex justify-between items-center mb-10">
-        <h1 className="text-3xl font-bold text-yellow-400">Your Flows</h1>
-        <div className="flex gap-4">
-          {/* Templates Button */}
+        <h1 className="text-3xl font-bold">Your Flows</h1>
+        <div className="flex gap-3">
           <motion.button
             onClick={() => navigate("/templates")}
-            className="bg-blue-400 text-black font-semibold px-6 py-2 rounded-full shadow-lg hover:bg-blue-500 transition"
+            className="bg-gray-800 text-white font-medium px-5 py-2 rounded-lg hover:bg-gray-700 transition"
             whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
+            whileTap={{ scale: 0.97 }}
           >
             Templates
           </motion.button>
 
-          {/* Contacts Button */}
           <motion.button
             onClick={() => navigate("/contacts")}
-            className="bg-green-400 text-black font-semibold px-6 py-2 rounded-full shadow-lg hover:bg-green-500 transition"
+            className="bg-gray-800 text-white font-medium px-5 py-2 rounded-lg hover:bg-gray-700 transition"
             whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
+            whileTap={{ scale: 0.97 }}
           >
             Contacts
           </motion.button>
 
-          {/* Create Flow */}
           <motion.button
             onClick={() => navigate("/flow-builder")}
-            className="bg-yellow-400 text-black font-semibold px-6 py-2 rounded-full shadow-lg hover:bg-yellow-500 transition"
+            className="bg-white text-black font-bold px-5 py-2 rounded-lg hover:bg-gray-200 transition"
             whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
+            whileTap={{ scale: 0.97 }}
           >
-            + Create New Flow
+            + Create Flow
           </motion.button>
 
-          {/* Logout */}
           <motion.button
             onClick={() => {
               localStorage.removeItem("token");
               navigate("/");
             }}
-            className="bg-red-500 text-white font-semibold px-6 py-2 rounded-full shadow-lg hover:bg-red-600 transition"
+            className="bg-red-600 text-white font-medium px-5 py-2 rounded-lg hover:bg-red-700 transition"
             whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
+            whileTap={{ scale: 0.97 }}
           >
             Logout
           </motion.button>
@@ -130,38 +132,40 @@ export function Dashboard() {
       ) : flows.length === 0 ? (
         <p className="text-gray-400">No flows found. Start by creating one!</p>
       ) : (
-        <div className="grid md:grid-cols-3 gap-6">
+        <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-4">
           {flows.map((flow) => (
             <motion.div
               key={flow._id}
-              className="bg-white/10 backdrop-blur-lg p-6 rounded-2xl shadow-lg"
-              initial={{ opacity: 0, y: 20 }}
+              className="bg-gray-900/70 border border-gray-700 p-5 rounded-xl shadow-md hover:shadow-lg hover:scale-[1.02] transition"
+              initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.3 }}
+              transition={{ duration: 0.4, ease: "easeOut" }}
             >
-              <h3 className="text-xl font-bold text-yellow-300 mb-2">
+              <h3 className="text-lg font-semibold text-white mb-1">
                 {flow.name || "Untitled Flow"}
               </h3>
-              <p className="text-gray-300 text-sm mb-4">
+              <p className="text-gray-400 text-sm mb-4">
                 Created at: {new Date(flow.createdAt).toLocaleDateString()}
               </p>
 
               <div className="flex flex-wrap gap-2">
                 <button
                   onClick={() => navigate(`/flows/${flow._id}`)}
-                  className="px-4 py-2 text-sm bg-indigo-500 rounded-lg hover:bg-indigo-600 transition"
+                  className="px-4 py-2 text-sm rounded-md bg-black border border-indigo-500/40 text-white font-semibold hover:bg-indigo-500/20 hover:border-indigo-500 transition shadow-md"
                 >
                   View
                 </button>
+
                 <button
                   onClick={() => handleExecute(flow._id)}
-                  className="px-4 py-2 text-sm bg-green-500 rounded-lg hover:bg-green-600 transition"
+                  className="px-4 py-2 text-sm rounded-md bg-black border border-green-500/40 text-white font-semibold hover:bg-green-500/20 hover:border-green-500 transition shadow-md"
                 >
                   Execute
                 </button>
+
                 <button
                   onClick={() => handleDelete(flow._id)}
-                  className="px-4 py-2 text-sm bg-red-500 rounded-lg hover:bg-red-600 transition"
+                  className="px-4 py-2 text-sm rounded-md bg-black border border-red-500/40 text-white font-semibold hover:bg-red-500/20 hover:border-red-500 transition shadow-md"
                 >
                   Delete
                 </button>
