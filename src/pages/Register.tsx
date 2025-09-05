@@ -26,7 +26,7 @@ export function Register() {
         form
       );
 
-      localStorage.setItem("token", res.data.token); // save JWT
+      localStorage.setItem("token", res.data.token);
       setSuccess("Account created successfully! Redirecting to dashboard...");
       setTimeout(() => navigate("/dashboard"), 1200);
     } catch (err: any) {
@@ -37,9 +37,9 @@ export function Register() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-indigo-900 to-purple-900 flex items-center justify-center px-6">
+    <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-gray-800 flex items-center justify-center px-6">
       <motion.div
-        className="bg-white/10 backdrop-blur-lg p-8 rounded-2xl shadow-lg w-full max-w-md"
+        className="bg-black/60 backdrop-blur-lg p-8 rounded-2xl shadow-xl w-full max-w-md border border-white/10"
         initial={{ opacity: 0, y: 40 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
@@ -101,7 +101,7 @@ export function Register() {
           <motion.button
             type="submit"
             disabled={loading}
-            className="w-full bg-yellow-400 text-black font-semibold py-2 rounded-lg shadow-lg hover:bg-yellow-500 transition disabled:opacity-50"
+            className="w-full px-5 py-2 rounded-lg bg-black border border-yellow-500/40 text-white font-semibold hover:bg-yellow-500/20 hover:border-yellow-500 transition shadow-md disabled:opacity-50"
             whileHover={{ scale: loading ? 1 : 1.03 }}
             whileTap={{ scale: 0.97 }}
           >

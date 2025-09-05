@@ -24,8 +24,8 @@ export function LogIn() {
         form
       );
 
-      localStorage.setItem("token", res.data.token); // save JWT
-      navigate("/dashboard"); // redirect to dashboard
+      localStorage.setItem("token", res.data.token);
+      navigate("/dashboard");
     } catch (err: any) {
       setError(err.response?.data?.message || "Login failed");
     } finally {
@@ -36,52 +36,56 @@ export function LogIn() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-indigo-900 to-purple-900 flex items-center justify-center px-6">
       <motion.div
-        className="bg-white/10 backdrop-blur-lg p-8 rounded-2xl shadow-lg w-full max-w-md"
+        className="bg-black/40 backdrop-blur-lg p-8 rounded-2xl shadow-lg w-full max-w-md border border-white/10"
         initial={{ opacity: 0, y: 40 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
       >
-        <h2 className="text-3xl font-bold text-center text-yellow-400 mb-6">
+        {/* Title */}
+        <h2 className="text-3xl font-bold text-center text-white mb-6">
           Log In
         </h2>
 
+        {/* Error */}
         {error && (
           <p className="text-red-400 text-sm text-center mb-4">{error}</p>
         )}
 
+        {/* Form */}
         <form onSubmit={handleSubmit} className="space-y-4">
           {/* Email */}
           <div>
-            <label className="block text-sm text-gray-300 mb-1">Email</label>
+            <label className="block text-sm text-gray-400 mb-1">Email</label>
             <input
               type="email"
               name="email"
               value={form.email}
               onChange={handleChange}
               required
-              className="w-full px-4 py-2 rounded-lg bg-white/10 text-white border border-white/20 focus:outline-none focus:ring-2 focus:ring-yellow-400"
+              className="w-full px-4 py-2 rounded-lg bg-black border border-yellow-500/40 text-white placeholder-gray-400 focus:border-yellow-500 focus:ring focus:ring-yellow-500/20 outline-none transition"
               placeholder="you@example.com"
             />
           </div>
 
           {/* Password */}
           <div>
-            <label className="block text-sm text-gray-300 mb-1">Password</label>
+            <label className="block text-sm text-gray-400 mb-1">Password</label>
             <input
               type="password"
               name="password"
               value={form.password}
               onChange={handleChange}
               required
-              className="w-full px-4 py-2 rounded-lg bg-white/10 text-white border border-white/20 focus:outline-none focus:ring-2 focus:ring-yellow-400"
+              className="w-full px-4 py-2 rounded-lg bg-black border border-yellow-500/40 text-white placeholder-gray-400 focus:border-yellow-500 focus:ring focus:ring-yellow-500/20 outline-none transition"
               placeholder="••••••••"
             />
           </div>
 
+          {/* Submit Button */}
           <motion.button
             type="submit"
             disabled={loading}
-            className="w-full bg-yellow-400 text-black font-semibold py-2 rounded-lg shadow-lg hover:bg-yellow-500 transition disabled:opacity-50"
+            className="w-full px-5 py-2 rounded-lg bg-black border border-yellow-500/40 text-white font-semibold hover:bg-yellow-500/20 hover:border-yellow-500 transition shadow-md disabled:opacity-50"
             whileHover={{ scale: loading ? 1 : 1.03 }}
             whileTap={{ scale: 0.97 }}
           >
@@ -89,6 +93,7 @@ export function LogIn() {
           </motion.button>
         </form>
 
+        {/* Switch to Register */}
         <p className="text-gray-400 text-sm text-center mt-4">
           Don’t have an account?{" "}
           <button
