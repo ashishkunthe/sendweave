@@ -34,7 +34,7 @@ export function LogIn() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-indigo-900 to-purple-900 flex items-center justify-center px-6">
+    <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-gray-800 flex items-center justify-center px-6">
       <motion.div
         className="bg-black/40 backdrop-blur-lg p-8 rounded-2xl shadow-lg w-full max-w-md border border-white/10"
         initial={{ opacity: 0, y: 40 }}
