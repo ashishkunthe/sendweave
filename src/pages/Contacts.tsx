@@ -183,36 +183,37 @@ export function Contacts() {
       </header>
 
       {error ? (
-        <p className="text-red-400">{error}</p>
+        <p className="text-red-500">{error}</p>
       ) : contacts.length === 0 ? (
-        <p className="text-gray-400">No contacts found. Start by adding one!</p>
+        <p className="text-gray-500">No contacts found. Start by adding one!</p>
       ) : (
-        <div className="grid md:grid-cols-3 gap-6">
-          {contacts.map((contact) => (
-            <motion.div
-              key={contact._id}
-              className="bg-black/60 backdrop-blur-lg p-6 rounded-2xl shadow-lg border border-gray-800"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.3 }}
-            >
-              <h3 className="text-xl font-bold text-white mb-2">
-                {contact.name || "Unnamed Contact"}
-              </h3>
-              <p className="text-gray-300 mb-2">{contact.email}</p>
-              {contact.tags?.length > 0 && (
-                <p className="text-sm text-gray-400 mb-2">
-                  Tags: {contact.tags.join(", ")}
-                </p>
-              )}
-              <button
-                onClick={() => handleDelete(contact._id)}
-                className="px-4 py-2 text-sm rounded-lg bg-black border border-red-500/40 text-white hover:bg-red-600/20 hover:border-red-500 transition shadow-md"
+        <div className="max-w-3xl mx-auto bg-black/60 rounded-xl shadow-lg overflow-y-auto max-h-[70vh] custom-scrollbar">
+          <ul className="divide-y divide-gray-700">
+            {contacts.map((contact) => (
+              <li
+                key={contact._id}
+                className="flex items-center justify-between p-4"
               >
-                Delete
-              </button>
-            </motion.div>
-          ))}
+                <div>
+                  <h3 className="text-lg font-semibold text-white">
+                    {contact.name || "Unnamed Contact"}
+                  </h3>
+                  <p className="text-gray-300">{contact.email}</p>
+                  {contact.tags?.length > 0 && (
+                    <p className="text-sm text-gray-400">
+                      Tags: {contact.tags.join(", ")}
+                    </p>
+                  )}
+                </div>
+                <button
+                  onClick={() => handleDelete(contact._id)}
+                  className="px-4 py-2 text-sm rounded-lg bg-red-600 text-white hover:bg-red-700 transition"
+                >
+                  Delete
+                </button>
+              </li>
+            ))}
+          </ul>
         </div>
       )}
 
